@@ -10,7 +10,7 @@ function App() {
   const [posts, setPosts] = useState([])
   const [openModal, setOpenModal] = useState(false)
   const [user, setUser] = useState(null)
-
+  
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser)=>{
       if (authUser){
@@ -39,7 +39,11 @@ function App() {
       <div className="app__header">
         <img className="app__headerImage"src={IG_LOGO} alt="instagram logo"/>
       </div>
-      <Button onClick={() => setOpenModal(true)}>SignUp</Button>
+      { user ?
+        <Button onClick={() => auth.signOut()}>Log Out</Button>
+        :
+        <Button onClick={() => setOpenModal(true)}>SignUp</Button>
+      }
       {
       posts.map( ({id, post}) => (
         <Post key={id} username={post.username} caption={post.caption} imageURL={post.imageURL}/>
