@@ -5,7 +5,7 @@ import { Input, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import './Auth.css';
 
-function Auth({ igLogo, openModal, setOpenModal }) {
+function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLogin}) {
     const useStyles = makeStyles((theme) => ({
         paper: {
           position: 'absolute',
@@ -39,11 +39,19 @@ function Auth({ igLogo, openModal, setOpenModal }) {
             })
         })
         .catch((error)=> alert(error.message));
+        setOpenModal(false);
     }
+
+    const loginUser = () => {
+        auth.signInWithEmailAndPassword(email, password)
+        .catch((error)=> alert(error.message));
+        setOpenModalLogin(false);
+    }
+
     return (
         <Modal
-            open={openModal}
-            onClose={()=>setOpenModal(false)}
+            open={openModal || openModalLogin}
+            onClose={()=>{setOpenModal(false); setOpenModalLogin(false)}}
             >
             <div style={modalStyle} className={classes.paper}>
                 <form className="auth__form">
@@ -51,9 +59,20 @@ function Auth({ igLogo, openModal, setOpenModal }) {
                     <img src={igLogo} alt="instagram-logo"/>
                     </center>
                     <Input placeholder="email" value={email} onChange={(e)=>setEmail(e.target.value)} type="email"/>
-                    <Input placeholder="username" value={username} onChange={(e)=>setUsername(e.target.value)} type="text"/>
+                    
+                    {openModalLogin? 
+                        null
+                    :
+                        <Input placeholder="username" value={username} onChange={(e)=>setUsername(e.target.value)} type="text"/>
+                    }
+
                     <Input placeholder="password" value={password} onChange={(e)=>setPassword(e.target.value)} type="password"/>
-                    <Button onClick={()=>registerUser()}>Sign Up</Button>
+                    {openModalLogin?
+                        <Button onClick={()=>loginUser()}>Sign In</Button>
+                        :
+                        <Button onClick={()=>registerUser()}>Sign Up</Button>
+                    
+                    }
                 </form>
             </div>
         </Modal>

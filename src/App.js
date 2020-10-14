@@ -9,6 +9,7 @@ function App() {
   const IG_LOGO = "https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
   const [posts, setPosts] = useState([])
   const [openModal, setOpenModal] = useState(false)
+  const [openModalLogin, setOpenModalLogin] = useState(false)
   const [user, setUser] = useState(null)
   
   useEffect(() => {
@@ -35,14 +36,20 @@ function App() {
   }, [])
   return (
     <div className="app">
-    <AuthModal igLogo={IG_LOGO} openModal={openModal} setOpenModal={setOpenModal}/>
+    <AuthModal igLogo={IG_LOGO} openModal={openModal} setOpenModal={setOpenModal}
+      openModalLogin={openModalLogin} setOpenModalLogin={setOpenModalLogin}
+    />
       <div className="app__header">
         <img className="app__headerImage"src={IG_LOGO} alt="instagram logo"/>
       </div>
       { user ?
         <Button onClick={() => auth.signOut()}>Log Out</Button>
-        :
-        <Button onClick={() => setOpenModal(true)}>SignUp</Button>
+        :(
+        <>
+          <Button onClick={() => setOpenModal(true)}>SignUp</Button>
+          <Button onClick={() => setOpenModalLogin(true)}>SignIn</Button>
+        </>
+        )
       }
       {
       posts.map( ({id, post}) => (
