@@ -27,7 +27,7 @@ function App() {
   }, [ user ])
 
   useEffect(() => {
-    db.collection('posts').onSnapshot(snapshot=>{
+    db.collection('posts').orderBy('timestamp','desc').onSnapshot(snapshot=>{
       setPosts(snapshot.docs.map(doc=> (
         {id: doc.id,
          post: doc.data()}
@@ -53,8 +53,11 @@ function App() {
         )
       }
       <div className="contents">
-
-      <PostUpload/>
+      {user ?
+        <PostUpload username={user.displayName} />
+      :
+        <h4>Login to post</h4>
+      }
       {
         posts.map( ({id, post}) => (
           <Post key={id} username={post.username} caption={post.caption} imageURL={post.imageURL}/>

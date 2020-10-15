@@ -4,18 +4,19 @@ import './PostUpload.css'
 import { db, storage } from './firebase/firebase';
 import firebase from "firebase";
 
-function PostUpload() {
+function PostUpload({ username }) {
     const [progress, setProgress] = useState(0)
     const [file, setFile] = useState(null)
     const [caption, setCaption] = useState("")
+
     const chooseFile = (e) => {
         if (e.target.files[0]){
             setFile(e.target.files[0]);
         }
     }
     const uploadFile = () => {
-        const imageName = image.name;
-        const uploadTask = db.ref(`images/${imageName}`).put(file) //need to unique
+        const imageName = file.name;
+        const uploadTask = storage.ref(`images/${imageName}`).put(file) //need to unique
         uploadTask.on(
             "state_changed",
             (snapshot) => {
@@ -36,8 +37,13 @@ function PostUpload() {
                     .then(url => {
                         db.collection('posts').add({
                             timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                            caption: caption
+                            caption: caption,
+                            username: username,
+                            imageURL: url
                         })
+                    setProgress(0);
+                    setFile(null);
+                    setCaption('');
                     })
             }
         )
@@ -48,8 +54,8 @@ function PostUpload() {
             <Input className="child" type="file" name="upload-file" onChange={chooseFile}/>
             <progress className="child" max={100} value={progress}/>
             <Input className="child" type="text" name="upload-caption" placeholder="write your caption here"
-                value={caption}/>
-            <Button className="child">Upload</Button>
+                value={caption} onChange={(e)=>setCaption(e.target.value)}/>
+            <Button className="child" onClick={uploadFile}>Upload</Button>
         </div>
     )
 }
