@@ -4,6 +4,7 @@ import './App.css';
 import Post from './Post';
 import AuthModal from './Auth';
 import { Button } from "@material-ui/core";
+import PostUpload from './PostUpload';
 
 function App() {
   const IG_LOGO = "https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
@@ -51,11 +52,15 @@ function App() {
         </>
         )
       }
+      <div className="contents">
+
+      <PostUpload/>
       {
-      posts.map( ({id, post}) => (
-        <Post key={id} username={post.username} caption={post.caption} imageURL={post.imageURL}/>
-      )
-      )}
+        posts.map( ({id, post}) => (
+          <Post key={id} username={post.username} caption={post.caption} imageURL={post.imageURL}/>
+          )
+          )}
+      </div>
     </div>
     );
   }
