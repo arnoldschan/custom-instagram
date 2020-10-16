@@ -48,6 +48,18 @@ function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLog
         setOpenModalLogin(false);
     }
 
+    const handleButtonPress = () => {
+        if (openModalLogin){
+            loginUser();
+        } else {
+            registerUser();
+        }
+    }
+    const handleKeyPress = (event) => {
+        if(event.key === 'Enter'){
+            handleButtonPress();
+        }
+      }
     return (
         <Modal
             open={openModal || openModalLogin}
@@ -63,16 +75,17 @@ function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLog
                     {openModalLogin? 
                         null
                     :
-                        <Input placeholder="username" value={username} onChange={(e)=>setUsername(e.target.value)} type="text"/>
+                        <Input placeholder="username" value={username} onChange={(e)=>setUsername(e.target.value)} type="text" onKeyPress={handleKeyPress}/>
                     }
 
-                    <Input placeholder="password" value={password} onChange={(e)=>setPassword(e.target.value)} type="password"/>
-                    {openModalLogin?
-                        <Button onClick={()=>loginUser()}>Sign In</Button>
-                        :
-                        <Button onClick={()=>registerUser()}>Sign Up</Button>
-                    
+                    <Input placeholder="password" value={password} onChange={(e)=>setPassword(e.target.value)} type="password" onKeyPress={handleKeyPress}/>
+                    <Button onClick={handleButtonPress}>
+                    { openModalLogin?
+                        "Sign In"
+                    :
+                        "Sign Up"
                     }
+                    </Button>
                 </form>
             </div>
         </Modal>
