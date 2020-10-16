@@ -1,8 +1,9 @@
 import React from 'react'
 import './Post.css'
 import { Avatar } from '@material-ui/core';
+import Comments from './Comments';
 
-function Post({ username, caption , imageURL }) {
+function Post({ postID, username, caption , imageURL }) {
     return (
         <div className="post">
             <div className="post__header">
@@ -11,9 +12,7 @@ function Post({ username, caption , imageURL }) {
             </div>
             <img src={imageURL} alt={username} className="post__image"/>
             <h4 className="post__caption"><strong>{username}</strong> {caption}</h4>
-            {/* header */}
-            {/* image */}
-            {/* below image */}
+            <Comments postID={postID}/>
         </div>
     )
 }
