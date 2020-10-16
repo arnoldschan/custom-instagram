@@ -42,21 +42,23 @@ function App() {
     />
       <div className="app__header">
         <img className="app__headerImage"src={IG_LOGO} alt="instagram logo"/>
+        <div>
+          { user ?
+            <Button onClick={() => auth.signOut()}>Log Out</Button>
+            :(
+            <>
+              <Button onClick={() => setOpenModal(true)}>SignUp</Button>
+              <Button onClick={() => setOpenModalLogin(true)}>SignIn</Button>
+            </>
+            )
+          }
+        </div>
       </div>
-      { user ?
-        <Button onClick={() => auth.signOut()}>Log Out</Button>
-        :(
-        <>
-          <Button onClick={() => setOpenModal(true)}>SignUp</Button>
-          <Button onClick={() => setOpenModalLogin(true)}>SignIn</Button>
-        </>
-        )
-      }
       <div className="contents">
       {user ?
         <PostUpload username={user.displayName} />
       :
-        <h4>Login to post</h4>
+        <h4 className="app__notify">Login to post</h4>
       }
       {
         posts.map( ({id, post}) => (

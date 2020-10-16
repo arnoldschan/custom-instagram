@@ -12,10 +12,17 @@
   padding: 20px;
   border-bottom: 1px solid lightgrey;
   object-fit: contain;
-
+  display: flex;
+  justify-content: space-between;
+}
+.app__headerImage{
+  object-fit: contain;
 }
 .contents{
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.app__notify{
+  padding: 15px;
 }
