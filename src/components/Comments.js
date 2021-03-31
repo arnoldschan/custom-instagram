@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styled from "styled-components/macro";
-import { db } from './firebase/firebase';
+import { db } from '../firebase/firebase';
 
 
 function Comments({ postID }) {

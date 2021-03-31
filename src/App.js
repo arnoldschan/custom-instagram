@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { db, auth } from "./firebase/firebase";
 import './App.css';
-import Post from './Post';
-import AuthModal from './Auth';
+import Post from './components/Post';
+import AuthModal from './components/Auth';
 import { Button } from "@material-ui/core";
-import PostUpload from './PostUpload';
+import PostUpload from './components/PostUpload';
 
 function App() {
   const IG_LOGO = "https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
@@ -33,7 +33,6 @@ function App() {
          post: doc.data()}
       )))
     })
-    console.log(posts)
   }, [])
   return (
     <div className="app">

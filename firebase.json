@@ -1,0 +1,38 @@
+{
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "emulators": {
+    "auth": {
+      "host": "instagram.arnold.com",
+      "port": 9099
+    },
+    "firestore": {
+      "host": "instagram.arnold.com",
+      "port": 8080
+    },
+    "hosting": {
+      "host": "instagram.arnold.com",
+      "port": 5000
+    },
+    "ui": {
+      "host": "instagram.arnold.com",
+      "enabled": true
+    }
+  }
+}
