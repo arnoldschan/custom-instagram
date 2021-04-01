@@ -1,5 +1,5 @@
 import React from 'react'
-import './Post.css'
+import '../css/Post.css'
 import { Avatar } from '@material-ui/core';
 import Comments from './Comments';
 

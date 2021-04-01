@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { auth } from "./firebase/firebase";
+import { auth } from "../firebase/firebase";
 import { Modal } from "@material-ui/core";
 import { Input, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import './Auth.css';
+import '../css/Auth.css';
 
 function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLogin}) {
     const useStyles = makeStyles((theme) => ({
