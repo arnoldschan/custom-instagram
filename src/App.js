@@ -27,13 +27,20 @@ function App() {
   }, [ user ])
 
   useEffect(() => {
-    db.collection('posts').orderBy('timestamp','desc').onSnapshot(snapshot=>{
+    let unsubscribe = db
+    .collection('posts')
+    .orderBy('timestamp','desc')
+    .onSnapshot(snapshot=>{
       setPosts(snapshot.docs.map(doc=> (
         {id: doc.id,
-         post: doc.data()}
-      )))
-    })
-  }, [posts, user])
+          post: doc.data()}
+          )))
+        })
+        console.log('posts:', posts)
+        return () => {
+          unsubscribe();
+        }
+  }, [])
   return (
     <div className="app">
     <AuthModal igLogo={IG_LOGO} openModal={openModal} setOpenModal={setOpenModal}
