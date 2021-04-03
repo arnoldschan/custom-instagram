@@ -33,7 +33,7 @@ function App() {
          post: doc.data()}
       )))
     })
-  }, [])
+  }, [posts, user])
   return (
     <div className="app">
     <AuthModal igLogo={IG_LOGO} openModal={openModal} setOpenModal={setOpenModal}
