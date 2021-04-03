@@ -50,7 +50,10 @@ function App() {
         <img className="app__headerImage"src={IG_LOGO} alt="instagram logo"/>
         <div>
           { user ?
-            <Button onClick={() => auth.signOut()}>Log Out</Button>
+            <Button onClick={() => {
+              auth.signOut();
+            }
+            }>Log Out</Button>
             :(
             <>
               <Button onClick={() => setOpenModal(true)}>SignUp</Button>
@@ -64,7 +67,8 @@ function App() {
       {user ?
         <PostUpload username={user.displayName} />
       :
-        <h4 className="app__notify">Login to post</h4>
+        <h4 className="app__notify">
+        <Button onClick={() => setOpenModalLogin(true)}>Login to post</Button></h4>
       }
       {
         posts.map( ({id, post}) => (

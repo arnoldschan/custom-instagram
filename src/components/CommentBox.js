@@ -16,17 +16,29 @@ function CommentBox({ user, postID }) {
             username: user.displayName,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
-        console.log(comment,postID, user.displayName)
         setComment("");
     }
     return (
-        <Wrapper>
-            <InputComment value={comment} onChange={(e)=>setComment(e.target.value)} type="text" placeholder="Add comment here..."/>
-            <InputButton onClick={submitHandler}>Submit</InputButton>
-        </Wrapper>
+        <>
+        {
+            user ?
+            <Wrapper>
+                <InputComment value={comment} onChange={(e)=>setComment(e.target.value)} type="text" placeholder="Add comment here..."/>
+                <InputButton onClick={submitHandler}>Submit</InputButton>
+            </Wrapper>
+                :
+            <Prompt>Login to comment</Prompt>
+            }
+        </>
     )
 }
 
+
+const Prompt = styled.h4`
+    text-align: center;
+    padding: 10px;
+    border-top: 1px solid #cacaca;
+    `
 
 const InputComment = styled.input`
     flex: 1;

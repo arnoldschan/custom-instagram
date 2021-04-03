@@ -17,7 +17,6 @@ function PostUpload({ username }) {
     async function resizeMe(img) {
         var max_width = 500;
         var max_height = 500;
-        var preview = document.getElementById('preview')
 
         var canvas = document.createElement('canvas');
         const bitmap = await createImageBitmap(img)
@@ -49,8 +48,6 @@ function PostUpload({ username }) {
         canvas.height = height;
         var ctx = canvas.getContext("2d");
         ctx.drawImage(bitmap, 0, 0, width, height);
-        
-        preview.appendChild(canvas); // do the actual resized preview
         console.log(`canvas.toDataURL("image/jpeg", 0.7) ${canvas.toDataURL("image/jpeg", 0.7)}`)
         var blobBin = atob(canvas.toDataURL("image/jpeg", 0.7).split(',')[1]);
         var array = [];
@@ -131,7 +128,7 @@ function PostUpload({ username }) {
                         .catch(error => console.log('error', error));
                         
                     }
-
+        
     }
     return (
         <div className="postupload">
