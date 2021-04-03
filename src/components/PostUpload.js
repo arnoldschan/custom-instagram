@@ -73,7 +73,7 @@ function PostUpload({ username }) {
             db.collection('posts').add(newPost)
             console.log('added', newPost)
         };
-        if (process.env.ENVIRONMENT === 'production') {
+        if (process.env.REACT_APP_IMGUR_AUTH === undefined) {
             const uploadTask = storage.ref(`images/${imageName}`).put( await resizeMe(file)) //need to unique
             uploadTask.on(
                 "state_changed",
