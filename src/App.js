@@ -64,17 +64,19 @@ function App() {
         </div>
       </div>
       <div className="contents">
-      {user ?
-        <PostUpload username={user.displayName} />
-      :
-        <h4 className="app__notify">
-        <Button onClick={() => setOpenModalLogin(true)}>Login to post</Button></h4>
-      }
-      {
-        posts.map( ({id, post}) => (
-          <Post key={id} postID={id} user={user} username={post.username} caption={post.caption} imageURL={post.imageURL}/>
-          )
-          )}
+        {user ?
+          <PostUpload username={user.displayName} />
+        :
+          <h4 className="app__notify">
+          <Button onClick={() => setOpenModalLogin(true)}>Login to post</Button></h4>
+        }
+        <div className="app__post_wrapper">
+          {
+            posts.map( ({id, post}) => (
+              <Post key={id} postID={id} user={user} username={post.username} caption={post.caption} imageURL={post.imageURL}/>
+              )
+              )}
+        </div>
       </div>
     </div>
     );
