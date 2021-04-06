@@ -30,8 +30,6 @@ function PostUpload({ username }) {
             // console.log(`Math.round(${height} *= ${max_width} / ${width}) ${Math.round(height *= max_width / width)}` )
             height = Math.round(height *= max_width / width);
             width = max_width;
-            console.log(`width1 ${width}`)
-            console.log(`height2 ${height}`)
           }
         } else {
           if (height > max_height) {
@@ -41,14 +39,11 @@ function PostUpload({ username }) {
             height = max_height;
           }
         }
-        console.log(`width ${width}`)
-        console.log(`height ${height}`)
         // resize the canvas and draw the image data into it
         canvas.width = width;
         canvas.height = height;
         var ctx = canvas.getContext("2d");
         ctx.drawImage(bitmap, 0, 0, width, height);
-        console.log(`canvas.toDataURL("image/jpeg", 0.7) ${canvas.toDataURL("image/jpeg", 0.7)}`)
         var blobBin = atob(canvas.toDataURL("image/jpeg", 0.7).split(',')[1]);
         var array = [];
         for(var i = 0; i < blobBin.length; i++) {
@@ -71,7 +66,6 @@ function PostUpload({ username }) {
                 imageURL: url
             }
             db.collection('posts').add(newPost)
-            console.log('added', newPost)
         };
         if (process.env.REACT_APP_IMGUR_AUTH === undefined) {
             const uploadTask = storage.ref(`images/${imageName}`).put( await resizeMe(file)) //need to unique
@@ -103,10 +97,6 @@ function PostUpload({ username }) {
 
                         var formData = new FormData();
                         formData.append('image', await resizeMe(file));
-
-                        for (var key of formData.entries()) {
-                            console.log(key[0] + ', ' +  Object.toString(key[1]))
-                        }
                         var requestOptions = {
                         async: false,
                         crossDomain: true,

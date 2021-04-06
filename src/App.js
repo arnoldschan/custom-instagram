@@ -16,7 +16,6 @@ function App() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser)=>{
       if (authUser){
-        console.log(authUser)
         setUser(authUser);
       } else {
         setUser(null);
@@ -36,7 +35,6 @@ function App() {
           post: doc.data()}
           )))
         })
-        console.log('posts:', posts)
         return () => {
           unsubscribe();
         }
