@@ -15,6 +15,9 @@ function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLog
           boxShadow: theme.shadows[5],
           padding: theme.spacing(2, 4, 3),
         },
+        button: {
+            marginTop: 8
+        }
       }));
 
     const getModalStyle = () => {
@@ -47,7 +50,16 @@ function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLog
         .catch((error)=> alert(error.message));
         setOpenModalLogin(false);
     }
-
+    const guestButtonPress = () => {
+        let randomName = "guest-" + Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
+        auth.signInAnonymously()
+        .then((user) => {
+            user.user.updateProfile({
+                displayName: randomName
+            })
+            setOpenModalLogin(false);
+        })
+    }
     const handleButtonPress = () => {
         if (openModalLogin){
             loginUser();
@@ -79,13 +91,19 @@ function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLog
                     }
 
                     <Input placeholder="password" value={password} onChange={(e)=>setPassword(e.target.value)} type="password" onKeyPress={handleKeyPress}/>
-                    <Button onClick={handleButtonPress}>
+                    <Button className={classes.button} variant="outlined" color="primary" onClick={handleButtonPress}>
                     { openModalLogin?
                         "Sign In"
                     :
                         "Sign Up"
                     }
                     </Button>
+                    { openModalLogin ?
+                    <Button onClick={guestButtonPress}>
+                        Log in as Guest
+                    </Button>
+                    : null
+                    }
                 </form>
             </div>
         </Modal>

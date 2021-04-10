@@ -16,7 +16,6 @@ function App() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser)=>{
       if (authUser){
-        console.log(authUser)
         setUser(authUser);
       } else {
         setUser(null);
@@ -27,12 +26,18 @@ function App() {
   }, [ user ])
 
   useEffect(() => {
-    db.collection('posts').orderBy('timestamp','desc').onSnapshot(snapshot=>{
+    let unsubscribe = db
+    .collection('posts')
+    .orderBy('timestamp','desc')
+    .onSnapshot(snapshot=>{
       setPosts(snapshot.docs.map(doc=> (
         {id: doc.id,
-         post: doc.data()}
-      )))
-    })
+          post: doc.data()}
+          )))
+        })
+        return () => {
+          unsubscribe();
+        }
   }, [])
   return (
     <div className="app">
@@ -43,7 +48,10 @@ function App() {
         <img className="app__headerImage"src={IG_LOGO} alt="instagram logo"/>
         <div>
           { user ?
-            <Button onClick={() => auth.signOut()}>Log Out</Button>
+            <Button onClick={() => {
+              auth.signOut();
+            }
+            }>Log Out</Button>
             :(
             <>
               <Button onClick={() => setOpenModal(true)}>SignUp</Button>
@@ -54,16 +62,19 @@ function App() {
         </div>
       </div>
       <div className="contents">
-      {user ?
-        <PostUpload username={user.displayName} />
-      :
-        <h4 className="app__notify">Login to post</h4>
-      }
-      {
-        posts.map( ({id, post}) => (
-          <Post key={id} postID={id} username={post.username} caption={post.caption} imageURL={post.imageURL}/>
-          )
-          )}
+        {user ?
+          <PostUpload username={user.displayName} />
+        :
+          <h4 className="app__notify">
+          <Button onClick={() => setOpenModalLogin(true)}>Login to post</Button></h4>
+        }
+        <div className="app__post_wrapper">
+          {
+            posts.map( ({id, post}) => (
+              <Post key={id} postID={id} user={user} username={post.username} caption={post.caption} imageURL={post.imageURL}/>
+              )
+              )}
+        </div>
       </div>
     </div>
     );

@@ -12,6 +12,7 @@ function Comments({ postID }) {
                 .collection('posts')
                 .doc(postID)
                 .collection('comments')
+                .orderBy('timestamp', 'desc')
                 .onSnapshot((snapshot) => {
                     setComments(snapshot.docs.map((doc) => doc.data()));
             });
