@@ -12,6 +12,9 @@ function App() {
   const [openModal, setOpenModal] = useState(false)
   const [openModalLogin, setOpenModalLogin] = useState(false)
   const [user, setUser] = useState(null)
+  const [fetching, setFetching] = useState(false);
+  const [morePost, setMorePost] = useState(true)
+
   
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser)=>{
@@ -39,6 +42,28 @@ function App() {
           unsubscribe();
         }
   }, [])
+  const checkBottom =  (e) => {
+    const bottom = (
+      (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) &
+      (fetching === false) &
+      (morePost === true));
+    if (bottom) { 
+      setFetching(true)
+      console.log('fetching')
+    }
+ }  
+  
+  const fetchAdditional = () => {
+    setFetching(false);
+    setMorePost(false);
+  }
+  useEffect( () => {
+    setTimeout( () => {
+      fetchAdditional();
+      console.log('fetching-done')
+    }, 1000);
+  }, [fetching])
+
   return (
     <div className="app">
     <AuthModal igLogo={IG_LOGO} openModal={openModal} setOpenModal={setOpenModal}
@@ -61,19 +86,27 @@ function App() {
           }
         </div>
       </div>
-      <div className="contents">
+      <div className="contents" >
         {user ?
           <PostUpload username={user.displayName} />
         :
           <h4 className="app__notify">
           <Button onClick={() => setOpenModalLogin(true)}>Login to post</Button></h4>
         }
-        <div className="app__post_wrapper">
+        <div className="app__post_view"  onScroll={checkBottom}>
+          <div className="app__post_wrapper">
+          <Button onClick={()=> setMorePost(true)}>
+          GO
+          </Button>
           {
             posts.map( ({id, post}) => (
               <Post key={id} postID={id} user={user} username={post.username} caption={post.caption} imageURL={post.imageURL}/>
               )
               )}
+            {
+              fetching ? <h1 style={{height: '100px'}}>LOADING</h1> : null
+            }
+            </div>
         </div>
       </div>
     </div>
