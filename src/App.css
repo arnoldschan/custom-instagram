@@ -6,6 +6,8 @@
   background-color: #fafafa;
   height: 100%;
   width: 100vw;
+  overflow-y: scroll;
+  max-height: 100vh;
 }
 .app__header{
   background-color: white;
@@ -22,13 +24,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-bottom: 5vh;
 }
 .app__post_view {
   display: flex;
   justify-content: center;
   width: 100%;
-  overflow-y: scroll;
-  max-height: 80vh;
 }
 
 .app__post_wrapper {
@@ -36,5 +37,15 @@
 }
 .app__notify{
   padding: 15px;
+  text-align: center;
+}
+
+.app__loading{
+  display: flex;
+  justify-content: center;
+  height: 2vh;
+}
+
+.app__bottom{
   text-align: center;
 }

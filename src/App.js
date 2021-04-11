@@ -4,6 +4,7 @@ import './App.css';
 import Post from './components/Post';
 import AuthModal from './components/Auth';
 import { Button } from "@material-ui/core";
+import CircularProgress from '@material-ui/core/CircularProgress';
 import PostUpload from './components/PostUpload';
 
 function App() {
@@ -12,7 +13,7 @@ function App() {
   const [openModal, setOpenModal] = useState(false)
   const [openModalLogin, setOpenModalLogin] = useState(false)
   const [user, setUser] = useState(null)
-  const [fetching, setFetching] = useState(false);
+  const [fetching, setFetching] = useState(true);
   const [morePost, setMorePost] = useState(true)
 
   
@@ -27,17 +28,32 @@ function App() {
       unsubscribe();
     }
   }, [ user ])
-
-  useEffect(() => {
+  const [docs, setDocs] = useState([])
+  const fetchData = () => {
     let unsubscribe = db
     .collection('posts')
     .orderBy('timestamp','desc')
+    if (posts.length !== 0) {
+      const lastVisible = docs[docs.length-1];
+      unsubscribe = unsubscribe
+      .startAfter(lastVisible);
+    }
+    unsubscribe = unsubscribe
+    .limit(10)
     .onSnapshot(snapshot=>{
-      setPosts(snapshot.docs.map(doc=> (
+      if (snapshot.docs.length === 0) setMorePost(false);
+      setDocs([...docs, ...snapshot.docs])
+      setPosts([...posts, ...snapshot.docs.map(doc=> (
         {id: doc.id,
           post: doc.data()}
-          )))
+          ))])
+      console.log('fetching-done');
         })
+    setTimeout(setFetching(false), 1000);
+    return unsubscribe;
+  }
+  useEffect(() => {
+    const unsubscribe = fetchData();
         return () => {
           unsubscribe();
         }
@@ -47,25 +63,20 @@ function App() {
       (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) &
       (fetching === false) &
       (morePost === true));
-    if (bottom) { 
-      setFetching(true)
-      console.log('fetching')
-    }
- }  
+      if (bottom) { 
+        setFetching(true)
+      }
+  }  
   
-  const fetchAdditional = () => {
-    setFetching(false);
-    setMorePost(false);
-  }
+
   useEffect( () => {
-    setTimeout( () => {
-      fetchAdditional();
-      console.log('fetching-done')
-    }, 1000);
+    if (fetching === false) return;
+    let unsubscribe = fetchData();
+    return () => unsubscribe;
   }, [fetching])
 
   return (
-    <div className="app">
+    <div className="app"   onScroll={checkBottom}>
     <AuthModal igLogo={IG_LOGO} openModal={openModal} setOpenModal={setOpenModal}
       openModalLogin={openModalLogin} setOpenModalLogin={setOpenModalLogin}
     />
@@ -89,22 +100,22 @@ function App() {
       <div className="contents" >
         {user ?
           <PostUpload username={user.displayName} />
-        :
+          :
           <h4 className="app__notify">
           <Button onClick={() => setOpenModalLogin(true)}>Login to post</Button></h4>
         }
-        <div className="app__post_view"  onScroll={checkBottom}>
+        <div className="app__post_view">
           <div className="app__post_wrapper">
-          <Button onClick={()=> setMorePost(true)}>
-          GO
-          </Button>
           {
             posts.map( ({id, post}) => (
               <Post key={id} postID={id} user={user} username={post.username} caption={post.caption} imageURL={post.imageURL}/>
               )
               )}
-            {
-              fetching ? <h1 style={{height: '100px'}}>LOADING</h1> : null
+            { morePost?
+            <div className="app__loading">
+              <CircularProgress/>
+            </div>
+              : <h5 className="app__bottom">No more post!</h5>
             }
             </div>
         </div>
