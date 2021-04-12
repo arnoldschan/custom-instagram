@@ -30,17 +30,17 @@ function App() {
   }, [ user ])
   const [docs, setDocs] = useState([])
   const fetchData = () => {
-    let unsubscribe = db
+    let query = db
     .collection('posts')
     .orderBy('timestamp','desc')
     if (posts.length !== 0) {
       const lastVisible = docs[docs.length-1];
-      unsubscribe = unsubscribe
+      query = query
       .startAfter(lastVisible);
     }
-    unsubscribe = unsubscribe
+    query
     .limit(10)
-    .onSnapshot(snapshot=>{
+    .get().then(snapshot=>{
       if (snapshot.docs.length === 0) setMorePost(false);
       setDocs([...docs, ...snapshot.docs])
       setPosts([...posts, ...snapshot.docs.map(doc=> (
@@ -50,13 +50,9 @@ function App() {
       console.log('fetching-done');
         })
     setTimeout(setFetching(false), 1000);
-    return unsubscribe;
   }
   useEffect(() => {
-    const unsubscribe = fetchData();
-        return () => {
-          unsubscribe();
-        }
+    fetchData();
   }, [])
   const checkBottom =  (e) => {
     const bottom = (
@@ -71,8 +67,7 @@ function App() {
 
   useEffect( () => {
     if (fetching === false) return;
-    let unsubscribe = fetchData();
-    return () => unsubscribe;
+      fetchData();
   }, [fetching])
 
   return (

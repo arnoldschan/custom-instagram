@@ -5,31 +5,35 @@ import { db } from '../firebase/firebase';
 
 function Comments({ postID }) {
     const [comments, setComments] = useState([])
+    const [docs, setDocs] = useState([])
+    const [moreComments, setMoreComments] = useState(true)
     const loadComment = () => {
-        let unsubscribe;
+        let query;
         if (postID) {
-            unsubscribe = db
+            query = db
                 .collection('posts')
                 .doc(postID)
                 .collection('comments')
                 .orderBy('timestamp', 'desc')
             if (comments.length !== 0 ){
-                unsubscribe = unsubscribe
+                const lastVisible = docs[docs.length-1];
+                query = query
+                    .startAfter(lastVisible)
                     .limit(10)
+            } else {
+                query = query
+                    .limit(3)
             }
-            unsubscribe = unsubscribe
-                .limit(3)
-                .onSnapshot((snapshot) => {
-                    setComments(snapshot.docs.map((doc) => doc.data()));
+            query
+                .get().then((snapshot) => {
+                    if (snapshot.docs.length === 0) setMoreComments(false);
+                    setComments([...comments, ...snapshot.docs.map((doc) => doc.data())]);
+                    setDocs([...docs, ...snapshot.docs]);
             });
         }
-        return unsubscribe;
     }
     useEffect(() => {
-        let unsubscribe = loadComment();
-            return () => {
-                unsubscribe()
-        }
+        loadComment();
     }, [postID])
     return (
         <div>
@@ -37,7 +41,11 @@ function Comments({ postID }) {
                     <Comment key={id} username={comment.username} comment={comment.comment}/>
                 )
             )}
-            <MoreComment onClick={loadComment}>Load more comments...</MoreComment>
+            {
+                moreComments ?
+                <MoreComment onClick={loadComment}>Load more comments...</MoreComment>
+                : null
+            }
         </div>
     )
 }
