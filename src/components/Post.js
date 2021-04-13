@@ -5,7 +5,7 @@ import Comments from './Comments';
 import CommentBox from './CommentBox';
 
 function Post({ postID, user, username, caption , imageURL }) {
-    const [newComment, setNewComment] = useState("")
+    const [newComment, setNewComment] = useState({})
     
     return (
         <div className="post">

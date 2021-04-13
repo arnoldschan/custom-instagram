@@ -15,7 +15,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [fetching, setFetching] = useState(true);
   const [morePost, setMorePost] = useState(true)
-
+  const [newPost, setNewPost] = useState({})
   
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser)=>{
@@ -54,6 +54,10 @@ function App() {
   useEffect(() => {
     fetchData();
   }, [])
+  useEffect(() => {
+    if (Object.keys(newPost).length === 0) return;
+    setPosts([newPost, ...posts])
+  }, [newPost])
   const checkBottom =  (e) => {
     const bottom = (
       (e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight) &
@@ -94,7 +98,10 @@ function App() {
       </div>
       <div className="contents" >
         {user ?
-          <PostUpload username={user.displayName} />
+          <PostUpload 
+            username={user.displayName}
+            setNewPost={setNewPost}
+          />
           :
           <h4 className="app__notify">
           <Button onClick={() => setOpenModalLogin(true)}>Login to post</Button></h4>
@@ -103,7 +110,13 @@ function App() {
           <div className="app__post_wrapper">
           {
             posts.map( ({id, post}) => (
-              <Post key={id} postID={id} user={user} username={post.username} caption={post.caption} imageURL={post.imageURL}/>
+              <Post 
+                key={id}
+                postID={id}
+                user={user}
+                username={post.username}
+                caption={post.caption}
+                imageURL={post.imageURL}/>
               )
               )}
             { morePost?
