@@ -3,10 +3,10 @@ import styled from "styled-components/macro";
 import { db } from '../firebase/firebase';
 
 
-function Comments({ postID }) {
+function Comments({ postID, newComment}) {
     const [comments, setComments] = useState([])
-    const [docs, setDocs] = useState([])
     const [moreComments, setMoreComments] = useState(true)
+    const [docs, setDocs] = useState([])
     const loadComment = () => {
         let query;
         if (postID) {
@@ -35,6 +35,9 @@ function Comments({ postID }) {
     useEffect(() => {
         loadComment();
     }, [postID])
+    useEffect(() => {
+        setComments([newComment, ...comments]);
+    }, [newComment])
     return (
         <div>
             {comments.map((comment, id) => (

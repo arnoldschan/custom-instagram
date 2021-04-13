@@ -3,19 +3,21 @@ import styled from "styled-components/macro";
 import { db } from '../firebase/firebase';
 import firebase from 'firebase';
 
-function CommentBox({ user, postID }) {
+function CommentBox({ user, postID, setNewComment }) {
     const [comment, setComment] = useState("")
     const submitHandler = (event) => {
+        const newComment = {
+            comment: comment,
+            username: user.displayName,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }
         event.preventDefault();
         db
         .collection('posts')
         .doc(postID)
         .collection('comments')
-        .add({
-            comment: comment,
-            username: user.displayName,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
+        .add(newComment);
+        setNewComment(newComment);
         setComment("");
     }
     return (
@@ -23,7 +25,11 @@ function CommentBox({ user, postID }) {
         {
             user ?
             <Wrapper>
-                <InputComment value={comment} onChange={(e)=>setComment(e.target.value)} type="text" placeholder="Add comment here..."/>
+                <InputComment
+                    value={comment}
+                    onChange={(e)=>setComment(e.target.value)}
+                    type="text"
+                    placeholder="Add comment here..."/>
                 <InputButton onClick={submitHandler}>Submit</InputButton>
             </Wrapper>
                 :
