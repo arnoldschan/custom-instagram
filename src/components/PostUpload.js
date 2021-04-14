@@ -1,14 +1,14 @@
 import React, {useState} from 'react'
 import { Button, Input } from "@material-ui/core";
 import '../css/PostUpload.css'
-import { db, storage } from '../firebase/firebase';
+import { db, storage, auth } from '../firebase/firebase';
 import firebase from "firebase";
 
-function PostUpload({ username, setNewPost }) {
+function PostUpload({ setNewPost }) {
+    const username = auth.currentUser.displayName;
     const [progress, setProgress] = useState(0)
     const [file, setFile] = useState(null)
     const [caption, setCaption] = useState("")
-
     const chooseFile = (e) => {
         if (e.target.files[0]){
             setFile(e.target.files[0]);

@@ -47,7 +47,6 @@ function App() {
         {id: doc.id,
           post: doc.data()}
           ))])
-      console.log('fetching-done');
         })
     setTimeout(setFetching(false), 1000);
   }
@@ -75,11 +74,10 @@ function App() {
       fetchData();
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetching])
-
   return (
     <div className="app"   onScroll={checkBottom}>
     <AuthModal igLogo={IG_LOGO} openModal={openModal} setOpenModal={setOpenModal}
-      openModalLogin={openModalLogin} setOpenModalLogin={setOpenModalLogin}
+      openModalLogin={openModalLogin} setOpenModalLogin={setOpenModalLogin} setUser={setUser}
     />
       <div className="app__header">
         <img className="app__headerImage"src={IG_LOGO} alt="instagram logo"/>
