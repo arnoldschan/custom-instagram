@@ -53,10 +53,11 @@ function App() {
   }
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   useEffect(() => {
     if (Object.keys(newPost).length === 0) return;
-    setPosts([newPost, ...posts])
+    setPosts(posts => [newPost, ...posts])
   }, [newPost])
   const checkBottom =  (e) => {
     const bottom = (
@@ -72,6 +73,7 @@ function App() {
   useEffect( () => {
     if (fetching === false) return;
       fetchData();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fetching])
 
   return (

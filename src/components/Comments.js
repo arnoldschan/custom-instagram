@@ -34,9 +34,10 @@ function Comments({ postID, newComment}) {
     }
     useEffect(() => {
         loadComment();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [postID])
     useEffect(() => {
-        setComments([newComment, ...comments]);
+        setComments(comments => [newComment, ...comments]);
     }, [newComment])
     return (
         <div>
