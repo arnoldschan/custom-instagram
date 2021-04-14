@@ -5,7 +5,7 @@ import { Input, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import '../css/Auth.css';
 
-function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLogin}) {
+function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLogin, setUser}) {
     const useStyles = makeStyles((theme) => ({
         paper: {
           position: 'absolute',
@@ -56,7 +56,7 @@ function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLog
         .then((user) => {
             user.user.updateProfile({
                 displayName: randomName
-            })
+            }).then((user)=> setUser(user))
             setOpenModalLogin(false);
         })
     }

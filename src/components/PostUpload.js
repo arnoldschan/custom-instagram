@@ -1,14 +1,14 @@
 import React, {useState} from 'react'
 import { Button, Input } from "@material-ui/core";
 import '../css/PostUpload.css'
-import { db, storage } from '../firebase/firebase';
+import { db, storage, auth } from '../firebase/firebase';
 import firebase from "firebase";
 
-function PostUpload({ username }) {
+function PostUpload({ setNewPost }) {
+    const username = auth.currentUser.displayName;
     const [progress, setProgress] = useState(0)
     const [file, setFile] = useState(null)
     const [caption, setCaption] = useState("")
-
     const chooseFile = (e) => {
         if (e.target.files[0]){
             setFile(e.target.files[0]);
@@ -65,7 +65,10 @@ function PostUpload({ username }) {
                 username: username,
                 imageURL: url
             }
-            db.collection('posts').add(newPost)
+            db.collection('posts').add(newPost).then((doc)=>{
+                setNewPost({ post: newPost,
+                             id: doc.id });
+            }).catch(reason => console.error(reason))
         };
         if (process.env.REACT_APP_IMGUR_AUTH === undefined) {
             const uploadTask = storage.ref(`images/${imageName}`).put( await resizeMe(file)) //need to unique
