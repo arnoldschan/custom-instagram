@@ -14,26 +14,19 @@ function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLog
           border: '2px solid #000',
           boxShadow: theme.shadows[5],
           padding: theme.spacing(2, 4, 3),
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
         },
         button: {
             marginTop: 8
         }
       }));
 
-    const getModalStyle = () => {
-        const top = 50;
-        const left = 50;
-        return {
-            top: `${top}%`,
-            left: `${left}%`,
-            transform: `translate(-${top}%, -${left}%)`,
-        };
-    }
     const classes = useStyles();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    const [modalStyle] = React.useState(getModalStyle);
     const registerUser = () => {
         auth.createUserWithEmailAndPassword(email, password)
         .then((authUser)=>{
@@ -77,7 +70,7 @@ function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLog
             open={openModal || openModalLogin}
             onClose={()=>{setOpenModal(false); setOpenModalLogin(false)}}
             >
-            <div style={modalStyle} className={classes.paper}>
+            <div className={classes.paper}>
                 <form className="auth__form">
                     <center>
                     <img src={igLogo} alt="instagram-logo"/>
