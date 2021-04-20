@@ -51,10 +51,6 @@ function App() {
     setTimeout(setFetching(false), 1000);
   }
   useEffect(() => {
-    fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-  useEffect(() => {
     if (Object.keys(newPost).length === 0) return;
     setPosts(posts => [newPost, ...posts])
   }, [newPost])
