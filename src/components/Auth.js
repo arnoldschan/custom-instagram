@@ -5,7 +5,7 @@ import { Input, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import '../css/Auth.css';
 
-function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLogin, setUser}) {
+function Auth({ igLogo, openModalSignup, setOpenModalSignup, openModalLogin, setOpenModalLogin, setUser}) {
     const useStyles = makeStyles((theme) => ({
         paper: {
           position: 'absolute',
@@ -35,7 +35,7 @@ function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLog
             })
         })
         .catch((error)=> alert(error.message));
-        setOpenModal(false);
+        setOpenModalSignup(false);
     }
 
     const loginUser = () => {
@@ -67,8 +67,8 @@ function Auth({ igLogo, openModal, setOpenModal, openModalLogin, setOpenModalLog
       }
     return (
         <Modal
-            open={openModal || openModalLogin}
-            onClose={()=>{setOpenModal(false); setOpenModalLogin(false)}}
+            open={openModalSignup || openModalLogin}
+            onClose={()=>{setOpenModalSignup(false); setOpenModalLogin(false)}}
             >
             <div className={classes.paper}>
                 <form className="auth__form">
