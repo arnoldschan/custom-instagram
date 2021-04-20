@@ -6,6 +6,7 @@ import AuthModal from './components/Auth';
 import { Button } from "@material-ui/core";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import PostUpload from './components/PostUpload';
+import AuthBtn from './components/AuthBtn';
 
 function App() {
   const IG_LOGO = "https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
@@ -77,20 +78,12 @@ function App() {
     />
       <div className="app__header">
         <img className="app__headerImage"src={IG_LOGO} alt="instagram logo"/>
-        <div>
-          { user ?
-            <Button onClick={() => {
-              auth.signOut();
-            }
-            }>Log Out</Button>
-            :(
-            <>
-              <Button onClick={() => setOpenModalSignup(true)}>SignUp</Button>
-              <Button onClick={() => setOpenModalLogin(true)}>SignIn</Button>
-            </>
-            )
-          }
-        </div>
+        <AuthBtn
+          user={user}
+          auth={auth}
+          setOpenModalSignup={setOpenModalSignup}
+          setOpenModalLogin={setOpenModalLogin}
+          />
       </div>
       <div className="contents" >
         {user ?
