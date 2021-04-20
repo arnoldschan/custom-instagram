@@ -3,9 +3,9 @@ import { auth } from "../firebase/firebase";
 import { Modal } from "@material-ui/core";
 import { Input, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import '../css/Auth.css';
+import '../css/AuthModal.css';
 
-function Auth({ igLogo, openModalSignup, setOpenModalSignup, openModalLogin, setOpenModalLogin, setUser}) {
+function AuthModal({ igLogo, openModalSignup, setOpenModalSignup, openModalLogin, setOpenModalLogin, setUser}) {
     const useStyles = makeStyles((theme) => ({
         paper: {
           position: 'absolute',
@@ -104,5 +104,5 @@ function Auth({ igLogo, openModalSignup, setOpenModalSignup, openModalLogin, set
 }
 
 
-export default Auth
+export default AuthModal
 

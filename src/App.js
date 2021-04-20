@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { db, auth } from "./firebase/firebase";
 import './App.css';
 import Post from './components/Post';
-import AuthModal from './components/Auth';
+import AuthModal from './components/AuthModal';
 import { Button } from "@material-ui/core";
 import CircularProgress from '@material-ui/core/CircularProgress';
 import PostUpload from './components/PostUpload';
